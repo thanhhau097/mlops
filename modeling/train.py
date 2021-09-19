@@ -69,5 +69,3 @@ class Trainer():
                 eval_acc,
             ))
         return best_model
-    
-
