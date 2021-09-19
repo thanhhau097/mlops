@@ -1,0 +1,16 @@
+import gradio as gr
+import numpy as np
+
+from modeling.inference import MNISTInference
+
+
+def rgb2gray(rgb):
+    return np.dot(rgb[...,:3], [0.2989, 0.5870, 0.1140])
+
+def predict(img):
+    img = np.array(rgb2gray(img), dtype=np.float32)
+    return str(model.predict(img))
+
+model = MNISTInference('weights/mnist_model.pt')
+iface = gr.Interface(predict, "image", "text")
+iface.launch()

@@ -26,10 +26,11 @@ def train_model(config):
     model = Model().to(device)
     loss_fn = F.nll_loss
     optimizer = torch.optim.SGD(model.parameters(), lr=config["lr"], momentum=config["momentum"])
-    num_epochs = 100
+    num_epochs = 10
 
     trainer = Trainer(model, loss_fn, optimizer, device)
-    trainer.train(num_epochs, train_dataloader, val_dataloader)
+    best_model = trainer.train(num_epochs, train_dataloader, val_dataloader)
+    torch.save(best_model.state_dict(), './weights/mnist_model.pt')
 
 
 def hyperparams_opt():
@@ -52,9 +53,9 @@ def hyperparams_opt():
     #     ax = d.mean_accuracy.plot(ax=ax, legend=False)
 
 if __name__ == '__main__':
-    # train_model(config={
-    #     "lr": 0.001,
-    #     "momentum": 0.9
-    # })
-    hyperparams_opt()
+    train_model(config={
+        "lr": 0.001,
+        "momentum": 0.9
+    })
+    # hyperparams_opt()
     
