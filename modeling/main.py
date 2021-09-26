@@ -6,12 +6,19 @@ from ray import tune
 from ray.tune.schedulers import ASHAScheduler
 import numpy as np
 
+import neptune.new as neptune
+
 from modeling.dataset import MNISTDataset
 from modeling.model import Model
 from modeling.train import Trainer
 
 
 def train_model(config):
+    run = neptune.init(
+        project="thanhhau097/mlops",
+        api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJlMTRjM2ExOC1lYTA5LTQwODctODMxNi1jZjEzMjdlMjkxYTgifQ==",
+    )
+    run["parameters"] = config
     transform=transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,))
@@ -29,7 +36,7 @@ def train_model(config):
     num_epochs = 10
 
     trainer = Trainer(model, loss_fn, optimizer, device)
-    best_model = trainer.train(num_epochs, train_dataloader, val_dataloader)
+    best_model = trainer.train(num_epochs, train_dataloader, val_dataloader, run)
     torch.save(best_model.state_dict(), './weights/mnist_model.pt')
 
 

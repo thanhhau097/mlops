@@ -50,12 +50,18 @@ class Trainer():
         num_epochs,
         train_dataloader,
         eval_dataloader,
+        neptune_run=None
     ):
         best_loss = 1e10
         best_model = None
         for epoch in range(num_epochs):
             loss = self.train_step(train_dataloader)
             eval_loss, eval_acc = self.eval_step(eval_dataloader)
+            
+            if neptune_run is not None:
+                neptune_run["train/loss"].log(loss)
+                neptune_run["val/loss"].log(eval_loss)
+                neptune_run["val/acc"].log(eval_acc)
 
             if eval_loss < best_loss:
                 best_loss = eval_loss
