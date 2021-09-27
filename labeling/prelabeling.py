@@ -1,19 +1,20 @@
-import os
 import logging
-import boto3
 import uuid
-from PIL import Image
-
-from label_studio_ml.model import LabelStudioMLBase
-from label_studio_ml.utils import get_image_local_path, get_image_size, get_single_tag_keys
-from label_studio.core.utils.io import json_load, get_data_dir
-from label_studio.core.settings.base import DATA_UNDEFINED_NAME
-from botocore.exceptions import ClientError
 from urllib.parse import urlparse
+
+import boto3
+from botocore.exceptions import ClientError
+from label_studio.core.settings.base import DATA_UNDEFINED_NAME
+from label_studio_ml.model import LabelStudioMLBase
+from label_studio_ml.utils import (
+    get_image_local_path,
+)
+from PIL import Image
 
 from modeling.inference import MNISTInference
 
 logger = logging.getLogger(__name__)
+
 
 class MNISTClassification(LabelStudioMLBase):
     def __init__(self, model_path, **kwargs):
@@ -31,29 +32,22 @@ class MNISTClassification(LabelStudioMLBase):
         image_url = self._get_image_url(task)
         image_path = get_image_local_path(image_url, image_dir=self.image_dir)
         pil_image = Image.open(image_path)
-        pil_image = pil_image.convert('L')
+        pil_image = pil_image.convert("L")
 
         # Resize image to expected input shape
         pil_image = pil_image.resize((28, 28))
 
         result = [
-          {
-            "id": str(uuid.uuid4()),
-            "type": "choices",
-            "value": {
-                "choices": [
-                    str(self.model.predict(pil_image))
-                ]
-            },
-            "to_name": "image",
-            "from_name": "choice"
-          }
+            {
+                "id": str(uuid.uuid4()),
+                "type": "choices",
+                "value": {"choices": [str(self.model.predict(pil_image))]},
+                "to_name": "image",
+                "from_name": "choice",
+            }
         ]
 
-        return [{
-            "result": result,
-            "score": 1
-        }]
+        return [{"result": result, "score": 1}]
 
     def _get_image_url(self, task):
         image_url = task["data"].get("ocr") or task["data"].get(DATA_UNDEFINED_NAME)
@@ -65,9 +59,8 @@ class MNISTClassification(LabelStudioMLBase):
             client = boto3.client("s3")
             try:
                 image_url = client.generate_presigned_url(
-                    ClientMethod="get_object",
-                    Params={"Bucket": bucket_name, "Key": key}
+                    ClientMethod="get_object", Params={"Bucket": bucket_name, "Key": key}
                 )
             except ClientError as exc:
-                logger.warning(f"Can\"t generate presigned URL for {image_url}. Reason: {exc}")
+                logger.warning(f'Can"t generate presigned URL for {image_url}. Reason: {exc}')
         return image_url

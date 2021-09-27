@@ -1,8 +1,8 @@
 import os
 
-from torch.utils.data import Dataset
-from PIL import Image
 import numpy as np
+from PIL import Image
+from torch.utils.data import Dataset
 
 
 class MNISTDataset(Dataset):
@@ -35,7 +35,7 @@ class MNISTDataset(Dataset):
 
     def load_image(self, image_path):
         image = Image.open(image_path)
-        image = image.convert('L')
+        image = image.convert("L")
         image = image.resize((28, 28))
         image = np.array(image)
         return image
