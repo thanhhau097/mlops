@@ -1,6 +1,8 @@
 import torch
 from torch.nn import functional as F
 
+from modeling.config import logger
+
 
 class Trainer():
     def __init__(
@@ -67,7 +69,7 @@ class Trainer():
                 best_loss = eval_loss
                 best_model = self.model
 
-            print('Epoch: {}/{} | Loss: {} | Eval Loss: {} | Eval Acc: {}'.format(
+            logger.info('Epoch: {}/{} | Loss: {} | Eval Loss: {} | Eval Acc: {}'.format(
                 epoch + 1,
                 num_epochs,
                 loss,
