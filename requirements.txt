@@ -179,3 +179,7 @@ websocket-client==1.2.1
 websockets==10.0
 Werkzeug==2.0.1
 xmljson==0.2.0
+
+mkdocs-material
+mkdocs-macros-plugin
+mkdocstrings

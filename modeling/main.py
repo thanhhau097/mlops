@@ -13,7 +13,14 @@ from modeling.model import Model
 from modeling.train import Trainer
 
 
-def train_model(config):
+def train_model(config: dict):
+    """Train a model on MNIST dataset.
+
+    Note:
+        Please change api_token and project_name to the ones you have.
+    Args:
+        config (dict): Hyperparameters: learning rate and momentum.
+    """
     run = neptune.init(
         project="thanhhau097/mlops",
         api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJlMTRjM2ExOC1lYTA5LTQwODctODMxNi1jZjEzMjdlMjkxYTgifQ==",
@@ -41,6 +48,7 @@ def train_model(config):
 
 
 def hyperparams_opt():
+    """Hyperparameter optimization."""
     search_space = {
         "lr": tune.sample_from(lambda spec: 10**(-10 * np.random.rand())),
         "momentum": tune.uniform(0.1, 0.9)
@@ -51,13 +59,7 @@ def hyperparams_opt():
         scheduler=ASHAScheduler(metric="mean_accuracy", mode="max"),
         config=search_space
     )
-    # # Obtain a trial dataframe from all run trials of this `tune.run` call.
-    # dfs = analysis.trial_dataframes
 
-    # # Plot by epoch
-    # ax = None  # This plots everything on the same plot
-    # for d in dfs.values():
-    #     ax = d.mean_accuracy.plot(ax=ax, legend=False)
 
 if __name__ == '__main__':
     train_model(config={
