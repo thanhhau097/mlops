@@ -6,9 +6,7 @@ import boto3
 from botocore.exceptions import ClientError
 from label_studio.core.settings.base import DATA_UNDEFINED_NAME
 from label_studio_ml.model import LabelStudioMLBase
-from label_studio_ml.utils import (
-    get_image_local_path,
-)
+from label_studio_ml.utils import get_image_local_path
 from PIL import Image
 
 from modeling.inference import MNISTInference

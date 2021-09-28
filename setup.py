@@ -29,7 +29,6 @@ docs_packages = [
     "mkdocs-material==6.2.4",
     "mkdocstrings==0.14.0",
 ]
-
 setup(
     name="mlops",
     version="0.1",
@@ -52,11 +51,15 @@ setup(
     ],
     python_requires=">=3.6",
     packages=find_namespace_packages(),
-    install_requires=[required_packages],
+    install_requires=required_packages,
     extras_require={
         "test": test_packages,
         "dev": test_packages + dev_packages + docs_packages,
         "docs": docs_packages,
     },
-    entry_points={},
+    entry_points={
+        "console_scripts": [
+            "mlops = deployment.cli:app",
+        ],
+    },
 )
