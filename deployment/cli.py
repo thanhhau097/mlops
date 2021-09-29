@@ -1,7 +1,6 @@
 import typer
 
-from modeling.main import train_model, hyperparams_opt
-
+from modeling.main import hyperparams_opt, train_model
 
 app = typer.Typer()
 

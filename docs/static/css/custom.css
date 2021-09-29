@@ -2,20 +2,20 @@
 .md-sidebar {
     width: 10rem;
   }
-  
+
   /* Indenting docstrings */
   div.doc-contents:not(.first) {
     padding-left: 25px;
     border-left: 4px solid #e6e6e6;
     margin-bottom: 80px;
   }
-  
+
   /* Functions inside classes */
   .md-typeset h5 {
     font-size: 0.8rem;
     text-transform: none !important;
   }
-  
+
   /* Code highlights (custom) */
   .highlight .hll { background-color: #ffffcc }
   .highlight .c { color: #408080; font-style: italic } /* Comment */
