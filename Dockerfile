@@ -12,12 +12,9 @@ RUN apt-get update \
     && apt-get purge -y --auto-remove gcc build-essential
 
 # Copy
-COPY tagifai tagifai
-COPY app app
+COPY modeling modeling
+COPY deployment deployment
 COPY data data
-COPY model model
-COPY config config
-COPY stores stores
 
 # Pull assets from S3
 RUN dvc init --no-scm
