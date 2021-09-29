@@ -185,3 +185,7 @@ mkdocs-macros-plugin
 mkdocstrings
 
 rich
+dvc[s3]
+pytest
+pytest-cov
+pre-commit
