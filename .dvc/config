@@ -1,0 +1,4 @@
+[core]
+    remote = mnist
+['remote "mnist"']
+    url = s3://mnist/dvc
